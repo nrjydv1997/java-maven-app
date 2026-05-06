@@ -15,7 +15,7 @@ pipeline {
         
         stage('Git Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/nrjydv1997/java-maven-app.git'
+                git branch: 'feature-1', url: 'https://github.com/nrjydv1997/java-maven-app.git'
             }
         } 
         
@@ -30,24 +30,19 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
                         sh '''
-                        docker build -t javamavenapp .
-                        docker tag javamavenapp nrjydv1997/javamavenapp:latest
-                        docker push nrjydv1997/javamavenapp:latest
+                        docker build -t javamavenappfeature-1 .
+                        docker tag javamavenappfeature-1 nrjydv1997/javamavenappfeature-1:latest
+                        docker push nrjydv1997/javamavenappfeature-1:latest
                         '''
                     }
                 }
             }
         }
         
-        stage('Remove Docker container') {
-            steps {
-                sh 'docker rm -f java_maven_app || true'
-            }
-        }
         
         stage('Run Docker container') {
             steps {
-                sh 'docker run -d -p 9000:8080 --name java_maven_app nrjydv1997/javamavenapp:latest'
+                sh 'docker run -d -p 9001:8080 --name java_maven_app_feature-1 nrjydv1997/javamavenappfeature-1:latest'
             }
         }
     }
